@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from '../../shared/components/menu/index';
+import { cadastrar } from '../../services/api/cadastro/index';
 
 function Copyright(props: any) {
   return (
@@ -30,41 +31,38 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export const Cadastro = () => {
-  const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [territorio, setTerritorio] = useState<number>(1);
-  const [endereco, setEndereco] = useState<string>('');
-  const [telefone, setTelefone] = useState<string>('');
-  const [matricula, setMatricula] = useState<string>('');
-  const [cpf, setCpf] = useState<string>('');
+  const [nome, setNome] = useState<string>('');
+  const [codigo, setCodigo] = useState<string>('');
+  const [descricao, setDescricao] = useState<string>('');
+  const [preco, setPreco] = useState<number>(0);
 
   const navigate = useNavigate();
 
   const limparCampos = () => {
-      setName('')
-      setEmail('')
-      setCpf('')
-      setTelefone('')
-      setEndereco('')
-      setMatricula('')
+      setNome('')
+      setCodigo('')
+      setDescricao('')
+      setPreco(0)
   }
 
-//   const handleSubmit = async () => {
-//     await cadastrar({ email, name, territorio, endereco, telefone, matricula, cpf }).then(() => {
-//       alert('Cadastro realizado com sucesso!')
-//     }).catch(() => {
-//       alert('Erro ao realizar cadastro!')
-//     }).finally(() => {
-//       limparCampos();
-//     });
-//   };
+  const handlePriceChange = (e: any) => {
+    const rawValue = e.target.value;
+    const numericValue = parseFloat(rawValue.replace(/[^\d.,]/g, '').replace(',', '.'));
+    setPreco(isNaN(numericValue) ? 0 : numericValue);
+  };
+
+  const handleSubmit = async () => {
+    await cadastrar({ nome, codigo, descricao, preco }).then(() => {
+      alert('Cadastro realizado com sucesso!')
+    }).catch(() => {
+      alert('Erro ao realizar cadastro!')
+    }).finally(() => {
+      limparCampos();
+    });
+  };
 
   useEffect(() => {
-  }, [email, name, territorio, endereco, telefone, matricula, cpf]);
-
-  const handleChange = async (event: SelectChangeEvent<number>) => {
-    setTerritorio(event.target.value as number);
-  };
+  }, [nome, codigo, descricao, preco]);
 
   return (
     <>
@@ -89,105 +87,58 @@ export const Cadastro = () => {
             <Typography component="h1" variant="h5">
               Cadastro
             </Typography>
-            <Box component="form" onSubmit={() => "handleSubmit()"} sx={{ mt: 3 }}>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
                     autoComplete="given-name"
-                    name="firstName"
+                    name="nome"
                     required={true}
                     fullWidth
-                    id="firstName"
-                    label="Nome Completo"
+                    id="nome"
+                    label="Nome do Produto"
                     autoFocus
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    error={name.length < 6}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required={true}
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    error={email.length < 7}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required={true}
-                    fullWidth
-                    name="cpf"
-                    label="CPF"
-                    id="cpf"
-                    autoComplete="cpf"
-                    value={cpf}
-                    onChange={(e) => setCpf(e.target.value)}
-                    error={cpf.length < 11 || cpf.length > 11}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required={true}
-                    fullWidth
-                    name="phone"
-                    label="Telefone"
-                    id="phone"
-                    autoComplete="phone"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
-                    error={telefone.length < 8}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required={true}
-                    fullWidth
-                    name="adress"
-                    label="Endereço"
-                    id="adress"
-                    autoComplete="adress"
-                    value={endereco}
-                    onChange={(e) => setEndereco(e.target.value)}
-                    error={endereco.length < 8}
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    error={nome.length < 2}
                     />
                 </Grid>
                 <Grid item xs={12} sm={8}>
                   <TextField
                     required={true}
                     fullWidth
-                    name="matricula"
-                    label="Matrícula"
-                    id="matricula"
-                    autoComplete="number"
-                    value={matricula}
-                    onChange={(e) => setMatricula(e.target.value)}
-                    error={matricula.length < 3}
-                  />
+                    id="codigo"
+                    label="Código do Produto"
+                    name="codigo"
+                    value={codigo}
+                    onChange={(e) => setCodigo(e.target.value)}
+                    error={codigo.length < 1}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <TextField
                     required={true}
                     fullWidth
-                    name="territorio"
-                    label="Território"
-                    id="territorio"
-                    autoComplete="number"
-                    value={territorio}
-                    onChange={(e: any) => handleChange(e)}
-                    select={true}
-                  >
-                    <MenuItem value={1}>01</MenuItem>
-                    <MenuItem value={2}>02</MenuItem>
-                    <MenuItem value={3}>03</MenuItem>
-                    <MenuItem value={4}>04</MenuItem>
-                    <MenuItem value={5}>05</MenuItem>
-                  </TextField>
+                    name="preco"
+                    label="Preço"
+                    id="preco"
+                    value={preco === 0 ? '' : preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    onChange={handlePriceChange}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required={true}
+                    fullWidth
+                    multiline
+                    rows={2}
+                    name="descricao"
+                    label="Descrição"
+                    id="descricao"
+                    value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)}
+                    error={descricao.length < 2}
+                    />
                 </Grid>
               </Grid>
               <Button
@@ -195,9 +146,7 @@ export const Cadastro = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onSubmit={() => {
-                //   handleSubmit();
-                }}
+                onSubmit={handleSubmit}
               >
                 Cadastrar
               </Button>
