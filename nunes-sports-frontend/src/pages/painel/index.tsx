@@ -11,7 +11,7 @@ import { Menu } from '../../shared/components/menu/index';
 import { api } from '../../services/api/index';
 import { Pen, Trash } from 'phosphor-react';
 import { deletar } from '../../services/api/deletar/index';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useNavigate, useParams, useRoutes } from 'react-router-dom';
 import { Atualizar } from '../atualizar-produto';
 
 export const Nome = () => {
@@ -20,15 +20,8 @@ export const Nome = () => {
 
     const navigate = useNavigate();
 
-    const params = useRoutes([
-        {
-            path: '/edit/:id',
-            element: <Atualizar />,
-        },
-    ]);
-
     const handleEdit = (id: string) => {
-        navigate('/edit/', { state: { id } });
+        navigate(`/edit/${id}`);
       };
 
     const handleChange = async (event: any) => {
@@ -92,7 +85,7 @@ export const Nome = () => {
                                         <IconButton size="small" onClick={() => handleDelete(row.id)}>
                                             <Trash size={20} color="#000080" weight="thin" />
                                         </IconButton>
-                                        <IconButton size="small"  onClick={() => {navigate(`/edit/${row.id}`)}}>
+                                        <IconButton size="small" onClick={() => handleEdit(row.id)}>
                                             <Pen size={20} color="#000080" weight="thin" />
                                         </IconButton>
                                     </TableCell>
