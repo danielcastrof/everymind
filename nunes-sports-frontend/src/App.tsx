@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import { MenuLateral } from "./shared/components/menu-lateral";
+import { Menu } from "./shared/components/menu";
 import { AppRoutes } from './shared/routes/index';
 
 function App() {
