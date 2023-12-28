@@ -51,8 +51,11 @@ export class ProdutoService {
 
   async findByCode(codigo: string) {
     try {
-      const finds = await this.prisma.produto.findUnique({
-        where: {codigo: codigo.toUpperCase()}
+      const finds = await this.prisma.produto.findMany({
+        where: {codigo: {contains: codigo.toUpperCase()}},
+        orderBy: { 
+          nome: 'asc',
+        }
       });
       if(finds)
       return finds;
