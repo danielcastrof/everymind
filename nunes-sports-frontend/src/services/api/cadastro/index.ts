@@ -9,6 +9,6 @@ export interface Icadastro {
 }
 
 export const cadastrar = async (dados: Icadastro) => {
-    const url = '/produtos';
+    const url = '/produto';
      return api.post(url, dados);
   }

@@ -9,6 +9,6 @@ export interface Iatualizar {
 }
 
 export const atualizar = async (dados: Iatualizar) => {
-    const url = '/produtos/' + dados.id;
+    const url = '/produto/' + dados.id;
      return api.patch(url, dados);
   }
