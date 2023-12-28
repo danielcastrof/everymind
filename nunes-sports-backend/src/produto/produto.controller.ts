@@ -29,6 +29,11 @@ export class ProdutoController {
     return this.produtoService.findByCode(codigo);
   }
 
+  @Get('nome/:nome')
+  findByName(@Param('nome') nome: string) {
+    return this.produtoService.findByName(nome);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
     return this.produtoService.update(id, updateProdutoDto);

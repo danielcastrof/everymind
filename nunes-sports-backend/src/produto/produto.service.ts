@@ -67,6 +67,24 @@ export class ProdutoService {
     }
   }
 
+  async findByName(nome: string) {
+    try {
+      const finds = await this.prisma.produto.findMany({
+        where: {nome: {contains: nome.toUpperCase()}},
+        orderBy: { 
+          nome: 'asc',
+        }
+      });
+      if(finds)
+      return finds;
+
+      else
+      return `Não foi encontrado nenhum produto com o código: ${nome}`;
+    } catch (error) {
+      throw new Error(`Erro ao buscar produto: ${error.message}`);
+    }
+  }
+
   async update(id: string, updateProdutoDto: UpdateProdutoDto) {
     const produto = await this.prisma.produto.findUnique({
       where: {id}
