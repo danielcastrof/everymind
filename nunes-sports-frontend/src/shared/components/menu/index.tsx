@@ -29,7 +29,7 @@ export const Menu: React.FC<{children: React.ReactNode}> = ({children}) => {
                             <ListItemText primary="Todos os Registros" />
                         </ListItemButton>
 
-                        <ListItemButton onClick={() => navigate('/produtos/code')}>
+                        <ListItemButton onClick={() => navigate('/code')}>
                             <ListItemIcon>
                                 <Tag size={20} color="#000080" weight="thin" />
                             </ListItemIcon>
