@@ -70,7 +70,7 @@ export class ProdutoService {
   async findByName(nome: string) {
     try {
       const finds = await this.prisma.produto.findMany({
-        where: {nome: {contains: nome.toUpperCase()}},
+        where: {nome: {contains: nome, mode: 'insensitive'}},
         orderBy: { 
           nome: 'asc',
         }
