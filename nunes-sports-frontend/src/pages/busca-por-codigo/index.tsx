@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import { Menu } from '../../shared/components/menu/index';
 import { api } from '../../services/api/index';
+import { Pen, Trash } from 'phosphor-react';
 
 export const Codigo = () => {
     const [registers, setRegisters] = useState<any[]>([]);
@@ -24,8 +25,8 @@ export const Codigo = () => {
             setRegisters(response.data);
         }
         else {
-        const response = await api.get('/produto/code/' + codigo);
-        setRegisters(response.data);
+            const response = await api.get('/produto/code/' + codigo);
+            setRegisters(response.data);
         }
     }
 
@@ -41,6 +42,8 @@ export const Codigo = () => {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead style={{ backgroundColor: '#0405FF', borderRadius: 80 }}>
                             <TableRow >
+                                <TableCell style={{ fontWeight: 700, fontSize: 18, color: 'white' }} align="center"></TableCell>
+                                <TableCell style={{ fontWeight: 700, fontSize: 18, color: 'white' }} align="center">Ações</TableCell>
                                 <TableCell style={{ fontWeight: 700, fontSize: 18, color: 'white' }} align="center">Nome</TableCell>
                                 <TableCell style={{ fontWeight: 700, fontSize: 18, color: 'white' }} align="center">Código&nbsp;</TableCell>
                                 <TableCell style={{ fontWeight: 700, fontSize: 18, color: 'white' }} align="center">Descrição&nbsp;</TableCell>
@@ -52,7 +55,15 @@ export const Codigo = () => {
                                 <TableRow
                                     key={row.codigo}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
+                                >   <TableCell align="center"></TableCell>
+                                    <TableCell align="center">
+                                        <IconButton size="small" >
+                                            <Trash size={20} color="#000080" weight="thin" />
+                                        </IconButton>
+                                        <IconButton size="small" >
+                                            <Pen size={20} color="#000080" weight="thin" />
+                                        </IconButton>
+                                    </TableCell>
                                     <TableCell align='center' component="th" scope="row">
                                         {row.nome}
                                     </TableCell>
